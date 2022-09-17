@@ -24,6 +24,7 @@ class MainActivity : AppCompatActivity() {
     )
 
     private var currentIndex = 0
+    private var correctAnswersCount = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,10 +41,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.nextButton.setOnClickListener {
-            currentIndex = (currentIndex + 1) % questionBank.size
-            updateQuestion()
-            enableAnswerButtons()
+            nextClicked()
         }
+        binding.nextButton.isClickable = false
 
         updateQuestion()
     }
@@ -73,6 +73,14 @@ class MainActivity : AppCompatActivity() {
         Log.d(TAG, "onDestroy() called")
     }
 
+    private fun nextClicked() {
+        binding.nextButton.isClickable = false
+        if (currentIndex == questionBank.size - 1) return
+        currentIndex = (currentIndex + 1) % questionBank.size
+        updateQuestion()
+        enableAnswerButtons()
+    }
+
     private fun updateQuestion() {
         val questionTextResId = questionBank[currentIndex].textResId
         binding.questionTextView.setText(questionTextResId)
@@ -91,6 +99,7 @@ class MainActivity : AppCompatActivity() {
             .show()
 
         disableAnswerButtons()
+        binding.nextButton.isClickable = true
     }
 
     private fun disableAnswerButtons() {
