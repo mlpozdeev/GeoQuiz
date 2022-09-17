@@ -42,6 +42,7 @@ class MainActivity : AppCompatActivity() {
         binding.nextButton.setOnClickListener {
             currentIndex = (currentIndex + 1) % questionBank.size
             updateQuestion()
+            enableAnswerButtons()
         }
 
         updateQuestion()
@@ -88,5 +89,17 @@ class MainActivity : AppCompatActivity() {
 
         Toast.makeText(this, messageResId, Toast.LENGTH_SHORT)
             .show()
+
+        disableAnswerButtons()
+    }
+
+    private fun disableAnswerButtons() {
+        binding.trueButton.isClickable = false
+        binding.falseButton.isClickable = false
+    }
+
+    private fun enableAnswerButtons() {
+        binding.trueButton.isClickable = true
+        binding.falseButton.isClickable = true
     }
 }
