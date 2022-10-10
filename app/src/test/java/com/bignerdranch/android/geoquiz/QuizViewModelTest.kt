@@ -20,4 +20,22 @@ class QuizViewModelTest {
         quizViewModel.moveToNext()
         assertEquals(R.string.question_australia, quizViewModel.currentQuestionText)
     }
+
+    @Test
+    fun providesExpectedQuestionAnswer() {
+        val savedStateHandle = SavedStateHandle()
+        val quizViewModel = QuizViewModel(savedStateHandle)
+        assertTrue(quizViewModel.currentQuestionAnswer)
+        quizViewModel.moveToNext()
+        assertTrue(quizViewModel.currentQuestionAnswer)
+        quizViewModel.moveToNext()
+        assertFalse(quizViewModel.currentQuestionAnswer)
+        quizViewModel.moveToNext()
+        assertFalse(quizViewModel.currentQuestionAnswer)
+        quizViewModel.moveToNext()
+        assertTrue(quizViewModel.currentQuestionAnswer)
+        quizViewModel.moveToNext()
+        assertTrue(quizViewModel.currentQuestionAnswer)
+        quizViewModel.moveToNext()
+    }
 }
