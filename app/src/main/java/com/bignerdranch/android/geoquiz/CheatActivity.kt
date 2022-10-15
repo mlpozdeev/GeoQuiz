@@ -3,6 +3,7 @@ package com.bignerdranch.android.geoquiz
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.bignerdranch.android.geoquiz.databinding.ActivityCheatBinding
@@ -29,6 +30,7 @@ class CheatActivity : AppCompatActivity() {
             binding.answerTextView.setText(answerText)
             setAnswerShownResult(true)
         }
+        binding.apiLevelTextView.text = getString(R.string.api_level_text, Build.VERSION.SDK_INT)
     }
 
     private fun setAnswerShownResult(isAnswerShown: Boolean) {
