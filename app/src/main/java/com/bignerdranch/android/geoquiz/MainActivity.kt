@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity() {
     ) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             quizViewModel.isCheater = result.data?.getBooleanExtra(EXTRA_ANSWER_SHOWN, false) ?: false
+            updateRemainingCheatsCount()
         }
     }
 
@@ -54,9 +55,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.cheatButton.setOnClickListener {
-            val answerIsTrue = quizViewModel.currentQuestionAnswer
-            val intent = CheatActivity.newIntent(this, answerIsTrue)
-            cheatLauncher.launch(intent)
+            if (quizViewModel.remainingCheatsCount > 0) {
+                val answerIsTrue = quizViewModel.currentQuestionAnswer
+                val intent = CheatActivity.newIntent(this, answerIsTrue)
+                cheatLauncher.launch(intent)
+            }
         }
 
         updateQuestion()
@@ -64,6 +67,7 @@ class MainActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             blurCheatButton()
         }
+        updateRemainingCheatsCount()
     }
 
     override fun onStart() {
@@ -117,5 +121,9 @@ class MainActivity : AppCompatActivity() {
             Shader.TileMode.CLAMP
         )
         binding.cheatButton.setRenderEffect(effect)
+    }
+
+    private fun updateRemainingCheatsCount() {
+        binding.remainingCheatsCountTextView.text = getString(R.string.remaining_cheats_count_text, quizViewModel.remainingCheatsCount)
     }
 }
