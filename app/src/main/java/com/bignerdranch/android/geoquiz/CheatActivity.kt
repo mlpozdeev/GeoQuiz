@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.viewModels
 import com.bignerdranch.android.geoquiz.databinding.ActivityCheatBinding
 
 const val EXTRA_ANSWER_SHOWN = "com.bignerdranch.android.geoquiz.answer_shown"
@@ -15,17 +16,24 @@ class CheatActivity : AppCompatActivity() {
 
     private var answerIsTrue = false
 
+    private val cheatViewModel: CheatViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCheatBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        cheatViewModel.answerText?.let { answerText ->
+            binding.answerTextView.setText(answerText)
+            setAnswerShownResult(true)
+        }
         answerIsTrue = intent.getBooleanExtra(EXTRA_ANSWER_IS_TRUE, false)
         binding.showAnswerButton.setOnClickListener {
             val answerText = when {
                 answerIsTrue -> R.string.true_button
                 else -> R.string.false_button
             }
+            cheatViewModel.answerText = answerText
             binding.answerTextView.setText(answerText)
             setAnswerShownResult(true)
         }
